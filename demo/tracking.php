@@ -153,8 +153,8 @@
         </div>
 		<!-- 4 -->
 		<div id="Recipient accepted" <?php echo ($row['statusid'] == 4?'':'style="display:none"'); ?>>
-		<h1 class="page-header">Money transfered!</h1>
-		Great Success!<tr/>
+		<h1 class="page-header">Recipient accepted!</h1>
+		Waiting for clearance!<tr/>
 			<table>
 				<tr>
 					<td>Amount:</td>
