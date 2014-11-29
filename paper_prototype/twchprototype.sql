@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.2.11
+-- version 4.2.7.1
 -- http://www.phpmyadmin.net
 --
--- Host: 127.0.0.1
--- Loomise aeg: Nov 29, 2014 kell 03:21 PL
--- Serveri versioon: 5.6.21
--- PHP versioon: 5.6.3
+-- Host: localhost
+-- Generation Time: Nov 29, 2014 at 06:38 PM
+-- Server version: 5.6.20
+-- PHP Version: 5.5.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,28 +17,36 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Andmebaas: `twchprototype`
+-- Database: `twchprototype`
 --
 
 -- --------------------------------------------------------
 
 --
--- Tabeli struktuur tabelile `person`
+-- Table structure for table `person`
 --
 
 CREATE TABLE IF NOT EXISTS `person` (
-  `PersonID` int(11) NOT NULL,
+`personID` int(11) NOT NULL,
   `firstname` varchar(100) COLLATE utf8_estonian_ci DEFAULT NULL,
   `lastname` varchar(100) COLLATE utf8_estonian_ci DEFAULT NULL,
   `iban` varchar(40) COLLATE utf8_estonian_ci DEFAULT NULL,
   `phonenr` varchar(40) COLLATE utf8_estonian_ci DEFAULT NULL,
   `email` varchar(70) COLLATE utf8_estonian_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_estonian_ci;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_estonian_ci AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `person`
+--
+
+INSERT INTO `person` (`personID`, `firstname`, `lastname`, `iban`, `phonenr`, `email`) VALUES
+(1, 'ASJA', NULL, 'BANKACCOUNT1234', '', 'PULK'),
+(2, 'Kaali Kaalikas', NULL, 'ee123', '2345678', '');
 
 -- --------------------------------------------------------
 
 --
--- Tabeli struktuur tabelile `status`
+-- Table structure for table `status`
 --
 
 CREATE TABLE IF NOT EXISTS `status` (
@@ -47,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `status` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_estonian_ci;
 
 --
--- Andmete tõmmistamine tabelile `status`
+-- Dumping data for table `status`
 --
 
 INSERT INTO `status` (`status_id`, `status_name`) VALUES
@@ -56,16 +64,17 @@ INSERT INTO `status` (`status_id`, `status_name`) VALUES
 (3, 'Recipient notified'),
 (4, 'Recipient accepted'),
 (5, 'Currency converted'),
-(6, 'Payment sent out');
+(6, 'Payment sent out'),
+(7, 'Rejected');
 
 -- --------------------------------------------------------
 
 --
--- Tabeli struktuur tabelile `transaction`
+-- Table structure for table `transaction`
 --
 
 CREATE TABLE IF NOT EXISTS `transaction` (
-  `transaction_id` int(11) NOT NULL,
+`transaction_id` int(11) NOT NULL,
   `senderid` int(11) DEFAULT NULL,
   `receiverid` int(11) DEFAULT NULL,
   `amount_sent` double DEFAULT NULL,
@@ -75,30 +84,51 @@ CREATE TABLE IF NOT EXISTS `transaction` (
   `currency_received` varchar(3) COLLATE utf8_estonian_ci DEFAULT NULL,
   `country_received` varchar(30) COLLATE utf8_estonian_ci DEFAULT NULL,
   `statusid` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_estonian_ci;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_estonian_ci AUTO_INCREMENT=2 ;
 
 --
--- Indeksid tõmmistatud tabelitele
+-- Dumping data for table `transaction`
+--
+
+INSERT INTO `transaction` (`transaction_id`, `senderid`, `receiverid`, `amount_sent`, `currency_sent`, `country_sent`, `amount_received`, `currency_received`, `country_received`, `statusid`) VALUES
+(1, 1, 2, 1234, 'EUR', 'EE', 5678, 'EUR', 'LV', 4);
+
+--
+-- Indexes for dumped tables
 --
 
 --
--- Indeksid tabelile `person`
+-- Indexes for table `person`
 --
 ALTER TABLE `person`
- ADD PRIMARY KEY (`PersonID`);
+ ADD PRIMARY KEY (`personID`);
 
 --
--- Indeksid tabelile `status`
+-- Indexes for table `status`
 --
 ALTER TABLE `status`
  ADD PRIMARY KEY (`status_id`);
 
 --
--- Indeksid tabelile `transaction`
+-- Indexes for table `transaction`
 --
 ALTER TABLE `transaction`
  ADD PRIMARY KEY (`transaction_id`);
 
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `person`
+--
+ALTER TABLE `person`
+MODIFY `personID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `transaction`
+--
+ALTER TABLE `transaction`
+MODIFY `transaction_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
