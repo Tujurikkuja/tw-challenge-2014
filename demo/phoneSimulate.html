@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  </head>
+  <body>
+  Phone nr: <input id="phone" type="text"/>
+  <div id="wrap" style="border:solid;border-width:1px;width:30%">
+	<div id="messageScreen" style="height:400px;overflow:auto;">
+	</div>
+	<textarea id="textSend" rows="6" cols="50"></textarea>
+	<button id="sendBtn">SEND</button>
+  </div>
+    <script src="import/jquery.min.js"></script>
+    <script src="import/jquery.form.js"></script> 
+	<script> 
+	
+	$("body").on('click', '#sendBtn', function(){
+		$.ajax({
+  			type: "POST",
+  			url: "sendMessage.php",
+  			data: { 
+  				'message': $("#textSend").text()
+				}
+			})
+		.done(function( msg ) {
+			$("#messageScreen").html($("#messageScreen").html() + '<p>' + $("#textSend").text() + '</p>');
+			$("#textSend").text('');
+		});
+	})
+	
+	var transFunc = function(){
+		$.ajax({
+  			type: "POST",
+  			url: "getTransactions.php",
+  			data: { 
+  				'phone': $("#phone").val()
+				}
+			})
+		.done(function( msg ) {
+			$("#messageScreen").html($("#messageScreen").html() + '<p>' + msg + '</p>');
+			window.setTimeout(transFunc, 1000);
+		});
+	}
+	
+	window.setTimeout(transFunc, 1000);
+	
+	</script>
+  </body>
+</html>

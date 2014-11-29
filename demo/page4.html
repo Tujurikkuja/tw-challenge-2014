@@ -51,6 +51,8 @@
 
       <div class="starter-template">
         <h1>Step 4 of 4: Upload your money:</h1>
+        <span>Bank account: </span><input name = "bnkacc" id = "bnkacc" type="text"/>
+		</br></br>
 		<button id="nextBtn1" class="btn btn-info">DEBIT CARD</button><button id="nextBtn2" class="btn btn-warning">BANK TRANSFER</button>
       </div>
 
@@ -67,11 +69,42 @@
     <script src="ie10-viewport-bug-workaround.js"></script>
 	<script> 
 	$("body").on('click', '#nextBtn1', function(){
-	window.location.href = 'tracking.php';
+		$.ajax({
+  			type: "POST",
+  			url: "setSession.php",
+  			data: { 
+  				'sender': {
+  					'account': $("#bnkacc").val()
+					}
+				}
+			})
+		.done(function( msg ) {
+			saveData();
+		});
+		
 	})
 	$("body").on('click', '#nextBtn2', function(){
-		window.location.href = 'tracking.php';
+		$.ajax({
+  			type: "POST",
+  			url: "setSession.php",
+  			data: { 
+  					'senderAccount': $("#bnkacc").val()
+				}
+			})
+		.done(function( msg ) {
+			saveData();
+		});
 	})
+	
+	function saveData(){
+		$.ajax({
+  			type: "POST",
+  			url: "saveData.php"
+  		})
+		.done(function( id ) {
+			window.location.href = 'tracking.php?id=' + id;
+		});
+	}
 	</script>
   </body>
 </html>
