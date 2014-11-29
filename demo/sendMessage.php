@@ -35,19 +35,18 @@
 							$res2 = mysqli_query($con, $sql2) or die(mysqli_error($con));
 							if($res2){
 								if(mysqli_num_rows($res2)){
-									$row2 = mysqli_fetch_assoc($res);
+									$row2 = mysqli_fetch_assoc($res2);
 									$data['name'] = $row2['firstname'];
 									$data['account'] = $row2['iban'];
 									$json['sender']  = $data;					
 								}
 							}
 							$data['name'] = $name;
-							$data['iban'] = $acc;
+							$data['account'] = $acc;
 							$json['receiver'] = $data;
-							$json['amount'] = $row['amount_sent'];
-							$json['currency'] = $row['currency_sent'];
+							$json['amount'] = $row['amount_received'];
+							$json['currency'] = $row['currency_received'];
 							$encode = json_encode($json);
-							echo $encode;
 							$curl = curl_init();
 							curl_setopt_array($curl, array(CURLOPT_RETURNTRANSFER => 1,
 							CURLOPT_URL => 'http://challenge.transferwise.com/?teamname=discostix&data='.$encode,

@@ -1,9 +1,6 @@
 <?php
 	session_start();
-	//include('config.php');
-	if(isset($_GET['id'])){
-	
-	}
+	include('config.php');
 ?>
 <html lang="en">
   <head>
@@ -31,9 +28,25 @@
   </head>
 
   <body>
-
+	<?php if(isset($_GET['id'])){
+		$sql = 'SELECT * FROM transaction WHERE transaction_id = "' . $_GET['id'] . '" LIMIT 1';
+		$res = mysqli_query($con, $sql);
+		if($res){
+			$row = mysqli_fetch_assoc($res);
+			$sql = 'SELECT * FROM person WHERE personID = "' . $row['receiverid'] . '"';
+			$res2 = mysqli_query($con, $sql) or die(mysqli_error($con));
+			if($res2){
+				$receiver = mysqli_fetch_assoc($res2);
+				$sql = 'SELECT * FROM person WHERE personID = "' . $row['senderid'] . '"';
+				$res3 = mysqli_query($con, $sql) or die(mysqli_error($con));
+				if($res3){
+					$sender = mysqli_fetch_assoc($res3);
+				}
+			}
+		}
+	} ?>
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container-fluid">
+      <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
@@ -57,43 +70,44 @@
       <div class="row">
         <div class="col-sm-3 col-md-3 sidebar">
 		<br/><br/>
-			<span>Tracking id: 12345</span><br/>
+			<span>Tracking id: <?php echo $row['transaction_id']; ?></span><br/>
 			<table>
 				<tr>
 					<td>Amount:</td>
-					<td>123.45 USD</td>
+					<td><?php echo $row['amount_received'] . ' ' . $row['currency_received']; ?></td>
 				</tr>
 				<tr>
 					<td>From:</td>
-					<td>Tonis Tuul</td>
+					<td><?php echo $sender['firstname']; ?></td>
 				</tr>
 				<tr>
 					<td>To:</td>
-					<td>+372 56488652</td>
+					<td><?php echo $receiver['phonenr']; ?></td>
 				</tr>
 				<tr>
 					<td>Reference:</td>
-					<td>Lahe asi</td>
+					<td></td>
 				</tr>
 			</table><br/>
 			<div id="status" class="row" style="margin-left:15px">
-				<input type="checkbox" value="setup" disabled/> Order set-up.</br>
-				<input type="checkbox" value="moneyRec" disabled/> Money received.</br>
-				<input type="checkbox" value="recipNot" disabled/> Recipient notified.</br>
-				<input type="checkbox" value="recipAcc" disabled/> Recipient accepted.</br>
-				<input type="checkbox" value="currConv" disabled/> Currency converted.</br>
-				<input type="checkbox" value="paymSent" disabled/> Payment sent out.</br>
+				<input type="checkbox" value="setup" disabled <?php echo (($row['statusid']>=1&&$row['statusid']<=6)?'checked':''); ?>/> Order set-up.</br>
+				<input type="checkbox" value="moneyRec" disabled <?php echo (($row['statusid']>=2&&$row['statusid']<=6)?'checked':''); ?>/> Money received.</br>
+				<input type="checkbox" value="recipNot" disabled <?php echo (($row['statusid']>=3&&$row['statusid']<=6)?'checked':''); ?>/> Recipient notified.</br>
+				<input type="checkbox" value="recipAcc" disabled <?php echo (($row['statusid']>=4&&$row['statusid']<=6)?'checked':''); ?>/> Recipient accepted.</br>
+				<input type="checkbox" value="currConv" disabled <?php echo (($row['statusid']>=5&&$row['statusid']<=6)?'checked':''); ?>/> Currency converted.</br>
+				<input type="checkbox" value="paymSent" disabled <?php echo ($row['statusid']==6?'checked':''); ?>/> Payment sent out.</br>
+				<input type="checkbox" value="paymRej" disabled <?php echo ($row['statusid']==7?'checked':''); ?>/> Payment rejected.</br>
 			</div>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 		<!-- 1 -->
-		<div id="Order set-up">		
+		<div id="Order set-up" <?php echo ($row['statusid'] == 1?'':'style="display:none"'); ?>>		
 		<h1 class="page-header">Waiting to receive money</h1>
 		If you haven't already, ask your bank to send money to TransferWise<tr/>
 			<table>
 				<tr>
 					<td>Amount:</td>
-					<td>123.45 USD</td>
+					<td><?php echo $row['amount_received'] . ' ' . $row['currency_received']; ?></td>
 				</tr>				
 				<tr>
 					<td>To:</td>
@@ -109,50 +123,50 @@
 				</tr>
 				<tr>
 					<td>Reference:</td>
-					<td>Lahe asi</td>
+					<td></td>
 				</tr>
 			</table>
         </div>
 		<!-- 2 -->
-		<div id="Money received">
+		<div id="Money received" <?php echo ($row['statusid'] == 2?'':'style="display:none"'); ?>>
 		<h1 class="page-header">Money received, trying to match transactions</h1>
 		This might take some time...Or is it already done? Refresh.<tr/>
         </div>
 		<!-- 3 -->
-		<div id="Recipient notified">
+		<div id="Recipient notified" <?php echo ($row['statusid'] == 3?'':'style="display:none"'); ?>>
 		<h1 class="page-header">Waiting for user to respond to sent SMS</h1>
 		If you haven't already, check your phone or ask the recipient to check theirs!<tr/>
 			<table>
 				<tr>
 					<td>Amount:</td>
-					<td>123.45 USD</td>
+					<td><?php echo $row['amount_received'] . ' ' . $row['currency_received']; ?></td>
 				</tr>				
 				<tr>
 					<td>To:</td>
-					<td>+372 56488652</td>
+					<td><?php echo $receiver['phonenr']; ?></td>
 				</tr>
 				<tr>
 					<td>Reference:</td>
-					<td>Lahe asi</td>
+					<td></td>
 				</tr>
 			</table>
         </div>
 		<!-- 4 -->
-		<div id="Recipient accepted">
+		<div id="Recipient accepted" <?php echo ($row['statusid'] == 4?'':'style="display:none"'); ?>>
 		<h1 class="page-header">Money transfered!</h1>
 		Great Success!<tr/>
 			<table>
 				<tr>
 					<td>Amount:</td>
-					<td>123.45 USD</td>
+					<td><?php echo $row['amount_received'] . ' ' . $row['currency_received']; ?></td>
 				</tr>				
 				<tr>
 					<td>To:</td>
-					<td>+372 56488652</td>
+					<td><?php echo $receiver['phonenr']; ?></td>
 				</tr>
 				<tr>
 					<td>Reference:</td>
-					<td>Lahe asi</td>
+					<td></td>
 				</tr>
 			</table>
         </div>
