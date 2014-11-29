@@ -1,0 +1,3 @@
+1. Percentage of transactions started with SMS service.
+2. Percentage of successful transfers with SMS service.
+3. The time it takes to accept inbound payments (in seconds).
