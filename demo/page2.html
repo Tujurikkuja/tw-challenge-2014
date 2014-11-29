@@ -1,4 +1,3 @@
-<?php session_start() ?>
 <html>
 <head>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script> 
@@ -11,11 +10,22 @@
 <span>Email: </span><input name = "email" id = "email" type="text" required />
 </br>
 <button id="nextBtn">NEXT</button>
-<?php var_dump($_SESSION) ?>
 </body>
 <script> 
 $("body").on('click', '#nextBtn', function(){
-	window.location.href = 'page3.html'
+$.ajax({
+  			type: "POST",
+  			url: "setSession.php",
+  			data: { 
+  				'sender': {
+  					'name': $("#name").val(),
+  					'email': $("#email").val()
+  				}
+  			 }
+		})
+  	.done(function( msg ) {
+    	window.location.href = 'page3.html';
+  	});
 })
 </script>
 </html>

@@ -15,7 +15,20 @@
 </body>
 <script> 
 $("body").on('click', '#nextBtn', function(){
-	window.location.href = 'page4.html'
+	$.ajax({
+  			type: "POST",
+  			url: "setSession.php",
+  			data: { 
+  				'receiver': {
+  					'name':$("#name").val(),
+  					'email':$("#email").val(),
+  					'phone':$("#phone").val()
+  				}
+  			 }
+		})
+  	.done(function( msg ) {
+    	window.location.href = 'page4.html';
+  	});
 })
 </script>
 </html>
