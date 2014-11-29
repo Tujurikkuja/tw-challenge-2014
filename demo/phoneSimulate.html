@@ -19,12 +19,12 @@
   			type: "POST",
   			url: "sendMessage.php",
   			data: { 
-  				'message': $("#textSend").text()
+  				'message': $("#textSend").val()
 				}
 			})
 		.done(function( msg ) {
-			$("#messageScreen").html($("#messageScreen").html() + '<p>' + $("#textSend").text() + '</p>');
-			$("#textSend").text('');
+			$("#messageScreen").html($("#messageScreen").html() + '<p>' + $("#textSend").val() + '</p><p>' + msg + '</p>');
+			$("#textSend").val('');
 		});
 	})
 	
