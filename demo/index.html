@@ -5,27 +5,40 @@
 </head>
 <body>
 <span> Step 1 of 4: How much to send: </span><br/>
-<span>SEND: </span><input name = "amount1" id = "amount1" type="text" required />
+<span>SEND: </span><input name = "amount1" id = "amount1" type="text" />
 <select id = "curr1">
 <option value="EUR">EUR</option>
 <option value="GPB">GBP</option>
 <option value="RUR">RUR</option>
 <option value="USD">USD</option>
-</select>
-</br>
-<span>RECEIVE: </span><input name = "amount1" id = "amount1" type="text" required />
-<select id = "curr1">
+</select><span>Country: </span><input name = "fromCountry" id = "fromCountry" type="text" /><br/>
+<span>RECEIVE: </span><input name = "amount2" id = "amount2" type="text" />
+<select id = "curr2">
 <option value="EUR">EUR</option>
 <option value="GPB">GBP</option>
 <option value="RUR">RUR</option>
 <option value="USD">USD</option>
-</select>
-</br>
+</select><span>Country: </span><input name = "toCountry" id = "toCountry" type="text" /><br/>
 <button id="nextBtn">NEXT</button>
 </body>
 <script> 
 $("body").on('click', '#nextBtn', function(){
-	window.location.href = 'page2.html'
+	$.ajax({
+  			type: "POST",
+  			url: "setSession.php",
+  			data: { 
+  				'amount1': $("#amount1").val(), 
+  				'curr1': $("#curr1").val(),
+  				'amount2': $("#amount2").val(),
+  			 	'curr2': $("#curr2").val(),
+  			 	'fromCountry': $("#fromCountry").val(),
+  			 	'toCountry': $("#toCountry").val(),
+  			 }
+		})
+  	.done(function( msg ) {
+    	window.location.href = 'page2.html';
+  	});
+	return false;
 })
 </script>
 </html>
