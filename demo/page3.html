@@ -1,0 +1,21 @@
+<html>
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script> 
+<script src="http://malsup.github.com/jquery.form.js"></script> 
+</head>
+<body>
+<span> Step 3 of 4: Who are you sending it to: </span><br/>
+<span>Name: </span><input name = "name" id = "name" type="text" required />
+</br>
+<span>Email: </span><input name = "email" id = "email" type="text" placeholder="optional"/>
+</br>
+<span>Phone: </span><input name = "phone" id = "phone" type="text" placeholder = "optional"/>
+</br>
+<button id="nextBtn">NEXT</button>
+</body>
+<script> 
+$("body").on('click', '#nextBtn', function(){
+	window.location.href = 'page4.html'
+})
+</script>
+</html>

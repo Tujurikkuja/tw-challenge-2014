@@ -1,0 +1,19 @@
+<html>
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script> 
+<script src="http://malsup.github.com/jquery.form.js"></script> 
+</head>
+<body>
+<span> Step 2 of 4: Who are you: </span><br/>
+<span>Name: </span><input name = "name" id = "name" type="text" required />
+</br>
+<span>Email: </span><input name = "email" id = "email" type="text" required />
+</br>
+<button id="nextBtn">NEXT</button>
+</body>
+<script> 
+$("body").on('click', '#nextBtn', function(){
+	window.location.href = 'page3.html'
+})
+</script>
+</html>
